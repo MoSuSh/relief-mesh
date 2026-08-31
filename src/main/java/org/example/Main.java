@@ -1,17 +1,40 @@
-    package org.example;
+package org.example;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class Main {
+import org.example.db.DatabaseConfig;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class PoolTest {
+
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        System.out.println("Starting connection pool test with 20 threads...\n");
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+        for (int i = 1; i <= 20; i++) {
+            int threadId = i;
+            Thread thread = new Thread(() -> runQuery(threadId));
+            thread.start();
+        }
+    }
+
+    private static void runQuery(int threadId) {
+        // Runs built-in PostgreSQL sleep query to simulate 1 second of DB work
+        String sql = "SELECT 1, pg_sleep(1);";
+
+        System.out.println("Thread " + threadId + " attempting to acquire connection...");
+
+        try (Connection conn = DatabaseConfig.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            if (rs.next()) {
+                System.out.println("✅ Thread " + threadId + " successfully executed query.");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("❌ Thread " + threadId + " failed: " + e.getMessage());
         }
     }
 }
