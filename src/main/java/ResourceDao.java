@@ -12,8 +12,7 @@ public class ResourceDao {
     }
 
     public boolean reserveInventory(long resourceId, long userId,
-                                    int requestedQuantity, int expectedVersion)
-                                    throws SQLException{
+                                    int requestedQuantity, int expectedVersion){
         try(Connection conn = dataSource.getConnection()){
             conn.setAutoCommit(false);
             try(PreparedStatement psmt = conn.prepareStatement("UPDATE resources SET stock = stock - ?, version = version + 1 WHERE id = ? AND version = ? AND stock >= ?;")) {
