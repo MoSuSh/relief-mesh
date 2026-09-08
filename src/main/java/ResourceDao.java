@@ -63,5 +63,22 @@ public class ResourceDao {
 
         ResourceDao resConnect = new ResourceDao(dataSource);
 
+        long resourceId = 1L;
+        long userId = 100L;
+        int requestedQuantity = 2;
+        int expectedVersion = 1;
+
+        try{
+            boolean isReserved = resConnect.reserveInventory(resourceId, userId, requestedQuantity, expectedVersion);
+            if(isReserved){
+                System.out.println("SUCCESS: Inventory reserved and log entry added!");
+            } else {
+                System.out.println("FAILED: Reservation failed due to low stock or version mismatch.");
+            }
+        }
+        finally {
+            dataSource.close();
+        }
     }
+
 }
