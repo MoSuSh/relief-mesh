@@ -15,7 +15,7 @@ public class ResourceDao {
                                     int requestedQuantity, int expectedVersion){
         try(Connection conn = dataSource.getConnection()){
             conn.setAutoCommit(false);
-            try(PreparedStatement psmt = conn.prepareStatement("UPDATE resources SET stock = stock - ?, version = version + 1 WHERE id = ? AND version = ? AND stock >= ?;")) {
+            try(PreparedStatement psmt = conn.prepareStatement("UPDATE resources SET available_quantity = available_quantity - ?, version = version + 1 WHERE primary_id = ? AND version = ? AND available_quantity >= ?;")) {
 
                 psmt.setInt(1, requestedQuantity);
                 psmt.setLong(2, resourceId);
@@ -25,7 +25,7 @@ public class ResourceDao {
                 int rowsUpdated = psmt.executeUpdate();
 
                 if (rowsUpdated == 1) {
-                    try(PreparedStatement psmts = conn.prepareStatement("INSERT INTO reservations(requestedQuantity, resourceId, expectedVersion) VALUES(?,?,?);")){
+                    try(PreparedStatement psmts = conn.prepareStatement("INSERT INTO reservations(quantity, resource_id, user_id) VALUES(?,?,?);")){
                         psmts.setInt(1,requestedQuantity);
                         psmts.setLong(2,resourceId);
                         psmts.setInt(3,expectedVersion);
@@ -62,7 +62,7 @@ public class ResourceDao {
 
         ResourceDao resConnect = new ResourceDao(dataSource);
 
-        long resourceId = 1L;
+        long resourceId = 3L;
         long userId = 100L;
         int requestedQuantity = 2;
         int expectedVersion = 1;
