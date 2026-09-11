@@ -110,6 +110,12 @@ The ReliefMesh backend runs on Java 21 and Javalin 7, utilizing HikariCP to mana
 
 ---
 
+### API Integration & Routing
+The server is powered by Javalin[cite: 3], exposing RESTful endpoints that map incoming web requests directly to backend database operations:
+* **`POST /api/reservations`**: Receives resource reservation payloads, validates input constraints, and executes optimistic locking transactions[cite: 1, 2, 3].
+* **`PATCH /api/reservations/{id}`**: Handles state-based workflow transitions to update reservation statuses (e.g., confirming warehouse pickups).
+
+---
 ## Directory Structure
 
     relief-mesh/

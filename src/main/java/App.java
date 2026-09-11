@@ -38,7 +38,7 @@ public class App {
                     ctx.status(200);
                     ctx.result("Reservation successful");
                 } else {
-                    ctx.status(400);
+                    ctx.status(400);x
                     ctx.result("Reservation failed: low stock or version mismatch");
                 }
             });
