@@ -91,7 +91,7 @@ The `resources` table tracks available stock and automatically increments the ro
     [ PostgreSQL 16 Database (`resources` & `reservations`) ]
 The ReliefMesh backend runs on Java 21 and Javalin 7, utilizing HikariCP to manage connections to a PostgreSQL 16 database running in Docker.
 
-![Javalin Server Startup](assets/reliefmesh_backend_demo.jpg)
+![Javalin Server Startup](assets/reliefmesh_backend_demo.png)
 ---
 
 ## Engineering Trade-Offs
