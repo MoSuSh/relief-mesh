@@ -114,7 +114,7 @@ The ReliefMesh backend runs on Java 21 and Javalin 7, utilizing HikariCP to mana
 
     relief-mesh/
     ├── assets/
-    │   └── demo.jpeg              # Visual demo image for README
+    │   └── demos.png              # Visual demo image for README
     ├── src/
     │   └── main/
     │       └── java/
@@ -155,19 +155,16 @@ Start the PostgreSQL 16 database using Docker Compose:
     mvn clean package
 
     # Launch the compiled Java application
-    java -cp target/relief-mesh-1.0-SNAPSHOT.jar App
+    mvn exec:java "-Dexec.mainClass=App"
 
 ### 4. Test the API
-Send a reservation request to the local Javalin server:
+Send a reservation request to the local Javalin server (replace x with your own version number):
 
-    curl -X POST http://localhost:8080/api/reservations \
-      -H "Content-Type: application/json" \
-      -d '{
-        "resource_id": 1,
-        "user_id": 101,
-        "quantity": 2,
-        "version": 0
-      }'
+    Invoke-RestMethod -Uri "http://localhost:8080/api/reservations" -Method Post -ContentType "application/json" -Body '{"resource_id": 3, "user_id": 101, "quantity": 2, "version": x}'
+
+Confirm pending reservations:
+
+    Invoke-RestMethod -Uri "http://localhost:8080/api/reservations/1" -Method Patch -ContentType "application/json" -Body '{"status": "CONFIRMED"}'
 
 ---
 
